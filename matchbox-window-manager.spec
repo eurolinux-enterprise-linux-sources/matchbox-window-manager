@@ -4,7 +4,7 @@
 Summary:       Window manager for the Matchbox Desktop
 Name:          matchbox-window-manager
 Version:       1.2
-Release:       15.%{alphatag}%{?dist}
+Release:       16.1.%{alphatag}%{?dist}
 Url:           http://projects.o-hand.com/matchbox/
 # svn checkout http://svn.o-hand.com/repos/matchbox/trunk/matchbox-window-manager
 License:       GPLv2+
@@ -12,6 +12,8 @@ Group:         User Interface/Desktops
 Source0:       %{name}-%{version}-%{alphatag}.tar.gz
 
 Patch1: matchbox-window-manager-1.2-keysyms.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1284728
+Patch10: zero-height-width.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  pkgconfig 
@@ -39,6 +41,7 @@ This package contains the window manager from Matchbox.
 %setup -q
 
 %patch1 -p2 -b .keysyms
+%patch10 -p1 -b .zero
 
 %build
 %configure
@@ -62,6 +65,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/themes/*
 
 %changelog
+* Thu Apr 14 2016 Petr Lautrbach <plautrba@redhat.com> - 1.2-16.20070628svn
+- Do not try to compute new proportions when one of the original is 0 (#1284728)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1.2-15.20070628svn
 - Mass rebuild 2014-01-24
 
